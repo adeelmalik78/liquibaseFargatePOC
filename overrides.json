@@ -1,0 +1,28 @@
+{
+  "containerOverrides": [
+    {
+      "name": "${{ env.CONTAINER_NAME }}",
+      "environment": [
+        {
+          "name": "LIQUIBASE_COMMAND_USERNAME",
+          "value": "${{ secrets.LIQUIBASE_COMMAND_USERNAME }}"
+        },
+        {
+          "name": "LIQUIBASE_COMMAND_PASSWORD","value": "${{ secrets.LIQUIBASE_COMMAND_PASSWORD }}"
+        },
+        {
+          "name": "LIQUIBASE_COMMAND_URL","value": "${{ secrets.LIQUIBASE_COMMAND_URL }}"
+        },
+        {
+          "name": "LIQUIBASE_COMMAND_CHANGELOG_FILE","value": "${{ vars.LIQUIBASE_COMMAND_CHANGELOG_FILE }}"
+        },
+        {
+          "name": "AWS_REGION","value": "us-west-2"
+        },
+        {
+          "name": "INSTALL_MYSQL","value": "false"
+        }
+      ]
+    }
+  ]
+}
