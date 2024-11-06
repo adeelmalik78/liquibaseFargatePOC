@@ -1,5 +1,5 @@
 {
-    "family": "liquibase-test1",
+    "family": "liquibase-flow",
     "containerDefinitions": [
         {
             "name": "SQL-Repository",
@@ -28,7 +28,7 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "/ecs/liquibase-test1",
+                    "awslogs-group": "/ecs/liquibase-flow",
                     "awslogs-create-group": "true",
                     "awslogs-region": "us-west-2",
                     "awslogs-stream-prefix": "ecs"
@@ -89,7 +89,7 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "/ecs/liquibase-test1",
+                    "awslogs-group": "/ecs/liquibase-flow",
                     "awslogs-create-group": "true",
                     "awslogs-region": "us-west-2",
                     "awslogs-stream-prefix": "ecs"
