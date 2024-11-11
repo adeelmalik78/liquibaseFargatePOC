@@ -40,7 +40,7 @@
         },
         {
             "name": "Liquibase-Pro",
-            "image": "709825985650.dkr.ecr.us-east-1.amazonaws.com/liquibase/liquibase/liquibasepro:4.29.2-test3",
+            "image": "709825985650.dkr.ecr.us-east-1.amazonaws.com/liquibase/liquibase/liquibasepro:4.30.0-latest",
             "cpu": 0,
             "portMappings": [],
             "essential": true,
