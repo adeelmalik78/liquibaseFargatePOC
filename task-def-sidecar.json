@@ -53,19 +53,6 @@
             ],
             "environment": [
                 {
-                  "name": "LIQUIBASE_COMMAND_USERNAME",
-                  "value": ""
-                },
-                {
-                  "name": "LIQUIBASE_COMMAND_PASSWORD","value": ""
-                },
-                {
-                  "name": "LIQUIBASE_COMMAND_URL","value": ""
-                },
-                {
-                  "name": "LIQUIBASE_COMMAND_CHANGELOG_FILE","value": ""
-                },
-                {
                   "name": "AWS_REGION","value": "us-west-2"
                 },
                 {
