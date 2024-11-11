@@ -87,7 +87,7 @@ jobs:
         environment-variables: |
           LIQUIBASE_COMMAND_URL=${{ vars.LIQUIBASE_COMMAND_URL }}
           LIQUIBASE_COMMAND_USERNAME=${{ vars.LIQUIBASE_COMMAND_USERNAME }}
-          LIQUIBASE_COMMAND_PASSWORD=${{ vars.LIQUIBASE_COMMAND_USERNAME }}
+          LIQUIBASE_COMMAND_PASSWORD=${{ vars.LIQUIBASE_COMMAND_PASSWORD }}
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
