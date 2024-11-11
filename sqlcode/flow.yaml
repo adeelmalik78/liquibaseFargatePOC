@@ -1,9 +1,6 @@
 ##########           LIQUIBASE FLOWFILE                ##########
 ##########  learn more http://docs.liquibase.com/flow  ##########
 
-# globalVariables:
-#   CR: ${CR:-null}
-
 stages:
 
   Version:
