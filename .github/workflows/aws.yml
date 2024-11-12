@@ -28,9 +28,10 @@ name: Deploy to Amazon ECS
 
 on:
   workflow_dispatch:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
+
 
 env:
   AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}
