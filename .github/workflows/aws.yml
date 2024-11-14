@@ -50,6 +50,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     environment: dev
+    if: ${{ github.event.push == '*/dev' }}
 
     steps:
     - name: Checkout
