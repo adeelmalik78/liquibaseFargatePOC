@@ -54,8 +54,7 @@ jobs:
 
     steps:
     - name: Testing
-      run: |
-      echo "The branch is ${{ env.BRANCH_NAME }} "
+      run:  echo "The branch is ${{ env.BRANCH_NAME }} "
 
 
     # steps:
