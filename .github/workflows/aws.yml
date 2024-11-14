@@ -53,58 +53,53 @@ jobs:
     if: github.ref_name == 'dev'
 
     steps:
-    - name: Testing
-      run:  echo "github.ref_name is ${{ github.ref_name }} "
+    - name: Checkout
+      uses: actions/checkout@v4
 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
-    # steps:
-    # - name: Checkout
-    #   uses: actions/checkout@v4
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
 
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v4
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-region: ${{ secrets.AWS_REGION }}
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.us-west-2.amazonaws.com
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .        
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-    # - name: Login to Amazon ECR
-    #   id: login-ecr
-    #   uses: aws-actions/amazon-ecr-login@v2
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: render-task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ env.IMAGE_NAME }}
+        environment-variables: |
+          LIQUIBASE_COMMAND_URL=${{ vars.LIQUIBASE_COMMAND_URL }}
+          LIQUIBASE_COMMAND_USERNAME=${{ vars.LIQUIBASE_COMMAND_USERNAME }}
+          LIQUIBASE_COMMAND_PASSWORD=${{ vars.LIQUIBASE_COMMAND_PASSWORD }}
 
-    # - name: Build, tag, and push image to Amazon ECR
-    #   id: build-image
-    #   env:
-    #     ECR_REGISTRY: ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.us-west-2.amazonaws.com
-    #     IMAGE_TAG: ${{ github.sha }}
-    #   run: |
-    #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .        
-    #     docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-    #     echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
-    # - name: Fill in the new image ID in the Amazon ECS task definition
-    #   id: render-task-def
-    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-    #   with:
-    #     task-definition: ${{ env.ECS_TASK_DEFINITION }}
-    #     container-name: ${{ env.CONTAINER_NAME }}
-    #     image: ${{ env.IMAGE_NAME }}
-    #     environment-variables: |
-    #       LIQUIBASE_COMMAND_URL=${{ vars.LIQUIBASE_COMMAND_URL }}
-    #       LIQUIBASE_COMMAND_USERNAME=${{ vars.LIQUIBASE_COMMAND_USERNAME }}
-    #       LIQUIBASE_COMMAND_PASSWORD=${{ vars.LIQUIBASE_COMMAND_PASSWORD }}
-
-    # - name: Deploy Amazon ECS task definition
-    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-    #   with:
-    #     # task-definition: ${{ env.ECS_TASK_DEFINITION }}
-    #     task-definition: ${{ steps.render-task-def.outputs.task-definition }}
-    #     cluster: ${{ env.ECS_CLUSTER }}
-    #     run-task: true
-    #     run-task-subnets: subnet-bf7d7ada,subnet-345e801f,subnet-0acebc53,subnet-13624764
-    #     run-task-security-groups: sg-215c6345
-    #     run-task-assign-public-IP: ENABLED
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+      with:
+        # task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        task-definition: ${{ steps.render-task-def.outputs.task-definition }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        run-task: true
+        run-task-subnets: subnet-bf7d7ada,subnet-345e801f,subnet-0acebc53,subnet-13624764
+        run-task-security-groups: sg-215c6345
+        run-task-assign-public-IP: ENABLED
 
 
