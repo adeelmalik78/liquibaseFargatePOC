@@ -53,9 +53,9 @@ jobs:
     environment: dev
 
     steps:
-      - name: Testing
-        run: |
-        echo "The branch is ${{ github.ref_name }} "
+    - name: Testing
+      run: |
+      echo "The branch is ${{ github.ref_name }} "
 
 
     # steps:
