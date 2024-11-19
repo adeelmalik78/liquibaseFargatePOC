@@ -30,7 +30,10 @@ on:
   workflow_dispatch:
     branches: [ "dev" ]
   push:
-    branches: [ "dev", "uat", "main" ]
+    branches:
+      - 'dev'
+      - 'uat'
+      - 'main'
 
 
 env:
