@@ -31,9 +31,9 @@ on:
     branches: [ "dev" ]
   push:
     branches:
-      - 'dev'
-      - 'uat'
-      - 'main'
+      - dev
+      - uat
+      - main
 
 
 env:
