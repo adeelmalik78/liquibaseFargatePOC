@@ -47,7 +47,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy to dev
+    name: Deploy to ${{ github.ref_name }}
     runs-on: ubuntu-latest
     environment: dev
     if: github.ref_name == 'dev'
