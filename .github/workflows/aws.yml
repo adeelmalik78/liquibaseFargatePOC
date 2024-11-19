@@ -30,7 +30,10 @@ on:
   workflow_dispatch:
     branches: [ "dev" ]
   push:
-    branches: [ "dev" ]
+    branches: 
+      - dev
+      - uat
+      - main
 
 
 env:
@@ -49,8 +52,8 @@ jobs:
   deploy:
     name: Deploy to ${{ github.ref_name }}
     runs-on: ubuntu-latest
-    environment: uat
-    if: github.ref_name == 'dev'
+    environment: ${{ github.ref_name }}
+    if: github.ref_name == 'dev' && github.ref_name == 'uat' && github.ref_name == 'main'
 
     steps:
     - name: Checkout
