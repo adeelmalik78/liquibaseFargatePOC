@@ -104,10 +104,10 @@ jobs:
         run-task-security-groups: sg-215c6345
         run-task-assign-public-IP: ENABLED
 
-jobs:
-  rollback:
-    name: Deploy to ${{ github.ref_name }}
-    runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}
-    if: github.ref_name == 'dev' || github.ref_name == 'uat' || github.ref_name == 'main' 
+# jobs:
+#   rollback:
+#     name: Deploy to ${{ github.ref_name }}
+#     runs-on: ubuntu-latest
+#     environment: ${{ github.ref_name }}
+#     if: github.ref_name == 'dev' || github.ref_name == 'uat' || github.ref_name == 'main' 
 
