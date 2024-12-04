@@ -26,9 +26,9 @@
 
 name: DB Rollback
 
-on:
-  workflow_dispatch:
-    branches: [ "dev" ]
+# on:
+#   workflow_dispatch:
+#     branches: [ "dev" ]
   # push:
   #   branches:
   #     - dev
