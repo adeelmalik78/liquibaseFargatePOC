@@ -52,11 +52,11 @@ stages:
       - type: liquibase
         command: update-testing-rollback
 
-  Rollback:
-    actions:
-      - type: liquibase
-        command: rollback-one-update
-        cmdArgs: {force: true}
+  # Rollback:
+  #   actions:
+  #     - type: liquibase
+  #       command: rollback-one-update
+  #       cmdArgs: {force: true}
 
 ## The endStage ALWAYS RUNS. 
 ## So put actions here which you desire to perform whether previous stages' actions succeed or fail.
