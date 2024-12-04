@@ -42,16 +42,19 @@ stages:
         command: status
         cmdArgs: {verbose: true}
 
+  Tag:
+    actions:
+      - type: liquibase
+        command: tag
+
   Update:
     actions:
       - type: liquibase
-        # if: "${isRollback} != true"
         command: update-testing-rollback
 
   Rollback:
     actions:
       - type: liquibase
-        # if: "${isRollback} == true"
         command: rollback-one-update
         cmdArgs: {force: true}
 
