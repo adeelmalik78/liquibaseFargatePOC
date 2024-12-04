@@ -24,26 +24,25 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: Deploy to Amazon ECS
+name: DB Rollback
 
 on:
   workflow_dispatch:
     branches: [ "dev" ]
-  push:
-    branches:
-      - dev
-      - uat
-      - main
+  # push:
+  #   branches:
+  #     - dev
+  #     - uat
+  #     - main
 
 env:
   AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}
   AWS_REGION: ${{ secrets.AWS_REGION }}   # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: liquibase/sqlrepository # set this to your Amazon ECR repository name
   ECS_CLUSTER: ${{ vars.MY_ECS_CLUSTER }}  # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: ${{ vars.MY_ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: ${{ vars.MY_ECS_TASK_DEFINITION_ROLLBACK }} # set this to the path to your Amazon ECS task definition
   CONTAINER_NAME: ${{ vars.MY_CONTAINER_NAME }} # set this to the name of the container in the
   IMAGE_NAME: ${{ vars.IMAGE_NAME }}
-  TAG: ${{ github.job }}
 
 permissions:
   contents: read
@@ -76,7 +75,6 @@ jobs:
         ECR_REGISTRY: ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.us-west-2.amazonaws.com
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        echo "TAG=${{ env.TAG }}"
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .        
         docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

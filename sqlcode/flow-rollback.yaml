@@ -1,0 +1,65 @@
+##########           LIQUIBASE FLOWFILE                ##########
+##########  learn more http://docs.liquibase.com/flow  ##########
+
+stages:
+
+  Version:
+    actions:
+      - type: shell
+        command: liquibase --version
+
+  Validation:
+    actions: 
+      - type: liquibase
+        command: validate
+
+  Connect:
+    actions:
+      - type: liquibase
+        command: connect
+
+  Checks:
+    actions:
+      - type: liquibase
+        command: checks show
+        cmdArgs: {
+          check-status: enabled,
+          auto-update: off,
+          checks-settings-file: "liquibase.checks-settings.conf"
+        }
+
+      - type: liquibase
+        command: checks run
+        cmdArgs: {
+          auto-update: off,
+          changeset-filter: pending,
+          checks-settings-file: "liquibase.checks-settings.conf"
+        }
+
+  Status:
+    actions:
+      - type: liquibase
+        command: status
+        cmdArgs: {verbose: true}
+
+  Update:
+    actions:
+      - type: liquibase
+        # if: "${isRollback} != true"
+        command: update-testing-rollback
+
+  Rollback:
+    actions:
+      - type: liquibase
+        # if: "${isRollback} == true"
+        command: rollback-one-update
+        cmdArgs: {force: true}
+
+## The endStage ALWAYS RUNS. 
+## So put actions here which you desire to perform whether previous stages' actions succeed or fail.
+## If you do not want any actions to ALWAYS RUN, simply delete the endStage from your flow file.
+
+endStage:
+  actions:
+    - type: liquibase
+      command: history
