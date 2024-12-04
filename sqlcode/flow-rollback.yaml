@@ -18,40 +18,14 @@ stages:
       - type: liquibase
         command: connect
 
-  Checks:
+  History_Before_Rollback:
     actions:
       - type: liquibase
-        command: checks show
-        cmdArgs: {
-          check-status: enabled,
-          auto-update: off,
-          checks-settings-file: "liquibase.checks-settings.conf"
-        }
-
-      - type: liquibase
-        command: checks run
-        cmdArgs: {
-          auto-update: off,
-          changeset-filter: pending,
-          checks-settings-file: "liquibase.checks-settings.conf"
-        }
-
-  Status:
-    actions:
-      - type: liquibase
-        command: status
-        cmdArgs: {verbose: true}
-
-  Update:
-    actions:
-      - type: liquibase
-        # if: "${isRollback} != true"
-        command: update-testing-rollback
+        command: history
 
   Rollback:
     actions:
       - type: liquibase
-        # if: "${isRollback} == true"
         command: rollback-one-update
         cmdArgs: {force: true}
 

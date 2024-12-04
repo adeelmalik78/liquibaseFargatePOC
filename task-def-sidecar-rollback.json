@@ -49,7 +49,7 @@
                 "--search-path=/sqlcode",
                 "--changelog-file=changelog.yaml",
                 "flow",
-                "--flow-file=/sqlcode/flow.yaml"
+                "--flow-file=/sqlcode/flow-rollback.yaml"
             ],
             "environment": [
                 {
