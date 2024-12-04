@@ -94,6 +94,7 @@ jobs:
           LIQUIBASE_COMMAND_URL=${{ vars.LIQUIBASE_COMMAND_URL }}
           LIQUIBASE_COMMAND_USERNAME=${{ vars.LIQUIBASE_COMMAND_USERNAME }}
           LIQUIBASE_COMMAND_PASSWORD=${{ vars.LIQUIBASE_COMMAND_PASSWORD }}
+          LIQUIBASE_COMMAND_TAG=${{ env.TAG }}
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
@@ -105,11 +106,3 @@ jobs:
         run-task-subnets: subnet-bf7d7ada,subnet-345e801f,subnet-0acebc53,subnet-13624764
         run-task-security-groups: sg-215c6345
         run-task-assign-public-IP: ENABLED
-
-jobs:
-  rollback:
-    name: Deploy to ${{ github.ref_name }}
-    runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}
-    if: github.ref_name == 'dev' || github.ref_name == 'uat' || github.ref_name == 'main' 
-
