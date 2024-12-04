@@ -29,11 +29,11 @@ name: DB Rollback
 on:
   workflow_dispatch: 
     branch: [ "uat" ]    
-  # push:
-  #   branches:
-  #     - dev
-  #     - uat
-  #     - main
+  push:
+    branches:
+      - dev
+      - uat
+      - main
 
 env:
   AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}
