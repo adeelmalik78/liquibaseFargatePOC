@@ -45,13 +45,13 @@ stages:
   Update:
     actions:
       - type: liquibase
-        # if: "${lbCommand} == update"
+        # if: "${isRollback} != true"
         command: update-testing-rollback
 
   Rollback:
     actions:
       - type: liquibase
-        # if: "${lbCommand} == update"
+        # if: "${isRollback} == true"
         command: rollback-one-update
         cmdArgs: {force: true}
 

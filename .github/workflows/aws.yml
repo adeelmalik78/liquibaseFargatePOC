@@ -34,7 +34,10 @@ on:
       - dev
       - uat
       - main
-
+  inputs:
+    isRollback: 
+      default: false
+      description: 'Indicate if this is a rollback operation.'
 
 env:
   AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}
