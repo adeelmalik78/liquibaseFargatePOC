@@ -27,7 +27,10 @@ stages:
     actions:
       - type: liquibase
         command: rollback-one-update
-        cmdArgs: {force: true}
+        cmdArgs: {
+          force: true,
+          report-name: "ROLLBACK.html"
+        }
 
 ## The endStage ALWAYS RUNS. 
 ## So put actions here which you desire to perform whether previous stages' actions succeed or fail.
