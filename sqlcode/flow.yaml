@@ -25,7 +25,7 @@ stages:
         cmdArgs: {
           check-status: enabled,
           auto-update: off,
-          checks-settings-file: "liquibase.checks-settings.conf"
+          checks-settings-file: "s3://liquibase-workshop-bucket/liquibase.checks-settings.conf"
         }
 
       - type: liquibase
@@ -33,7 +33,8 @@ stages:
         cmdArgs: {
           auto-update: off,
           changeset-filter: pending,
-          checks-settings-file: "liquibase.checks-settings.conf"
+          checks-settings-file: "liquibase.checks-settings.conf",
+          report-name: "CHECKS.html"
         }
 
   Status:
@@ -42,18 +43,22 @@ stages:
         command: status
         cmdArgs: {verbose: true}
 
+  Tag:
+    actions:
+      - type: liquibase
+        command: tag
+
   Update:
     actions:
       - type: liquibase
-        # if: "${lbCommand} == update"
-        command: update-testing-rollback
+        command: update
+        cmdArgs: {report-name: "UPDATE.html"}
 
-  Rollback:
-    actions:
-      - type: liquibase
-        # if: "${lbCommand} == update"
-        command: rollback-one-update
-        cmdArgs: {force: true}
+  # Rollback:
+  #   actions:
+  #     - type: liquibase
+  #       command: rollback-one-update
+  #       cmdArgs: {force: true}
 
 ## The endStage ALWAYS RUNS. 
 ## So put actions here which you desire to perform whether previous stages' actions succeed or fail.

@@ -1,0 +1,108 @@
+{
+    "family": "liquibase-flow",
+    "containerDefinitions": [
+        {
+            "name": "SQL-Repository",
+            "image": "442012004811.dkr.ecr.us-west-2.amazonaws.com/liquibase/sqlrepository",
+            "cpu": 0,
+            "portMappings": [],
+            "command": [
+                "/bin/sh",
+                "./alive.sh"
+            ],
+            "essential": false,
+            "environment": [
+                {
+                    "name": "AWS_DEFAULT_REGION",
+                    "value": "us-west-2"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [
+                {
+                    "sourceVolume": "sqlrepository",
+                    "containerPath": "/sqlcode",
+                    "readOnly": false
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/liquibase-flow",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "us-west-2",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "volumesFrom": [],
+            "systemControls": []
+        },
+        {
+            "name": "Liquibase-Pro",
+            "image": "709825985650.dkr.ecr.us-east-1.amazonaws.com/liquibase/liquibase/liquibasepro:4.30.0",
+            "cpu": 0,
+            "portMappings": [],
+            "essential": true,
+            "command": [
+                "--defaults-file=/sqlcode/liquibase.properties",
+                "--search-path=/sqlcode",
+                "--changelog-file=changelog.yaml",
+                "flow",
+                "--flow-file=/sqlcode/flow-rollback.yaml"
+            ],
+            "environment": [
+                {
+                  "name": "AWS_REGION","value": "us-west-2"
+                },
+                {
+                  "name": "INSTALL_MYSQL","value": "true"
+                }
+              ],
+            "environmentFiles": [],
+            "mountPoints": [
+                {
+                    "sourceVolume": "sqlrepository",
+                    "containerPath": "/sqlcode",
+                    "readOnly": false
+                }
+            ],
+            "volumesFrom": [
+                {
+                    "sourceContainer": "SQL-Repository",
+                    "readOnly": false
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/liquibase-flow",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "us-west-2",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "taskRoleArn": "arn:aws:iam::442012004811:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::442012004811:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "volumes": [
+        {
+            "name": "sqlrepository",
+            "host": {}
+        }
+    ],
+    "placementConstraints": [],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "2048",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    }
+}
