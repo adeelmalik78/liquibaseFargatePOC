@@ -96,7 +96,8 @@ jobs:
           LIQUIBASE_COMMAND_PASSWORD=${{ vars.LIQUIBASE_COMMAND_PASSWORD }}
           LIQUIBASE_COMMAND_TAG=${{ env.TAG }}
           LIQUIBASE_REPORTS_NAME="UPDATE-${{ env.TAG }}"
-          LIQUIBASE_REPORTS_PATH="s3://liquibase-workshop-bucket/reports/${{ env.TAG }}"
+          LIQUIBASE_REPORTS_PATH="s3://liquibase-workshop-bucket/"
+          # LIQUIBASE_REPORTS_PATH="s3://liquibase-workshop-bucket/reports/${{ env.TAG }}/"
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
