@@ -29,8 +29,8 @@ name: DB Rollback
 on:
   workflow_dispatch: 
     branch: [ "uat" ]    
-  # push:
-  #   branches:
+  push:
+    branches:
   #     - dev
   #     - uat
   #     - main
