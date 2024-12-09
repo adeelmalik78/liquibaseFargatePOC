@@ -33,7 +33,7 @@ stages:
         cmdArgs: {
           auto-update: off,
           changeset-filter: pending,
-          checks-settings-file: "liquibase.checks-settings.conf"
+          checks-settings-file: "s3://liquibase-workshop-bucket/liquibase.checks-settings.conf"
         }
 
   Status:
