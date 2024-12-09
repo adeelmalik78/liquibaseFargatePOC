@@ -50,7 +50,7 @@ stages:
   Update:
     actions:
       - type: liquibase
-        command: update}
+        command: update
 
   # Rollback:
   #   actions:
