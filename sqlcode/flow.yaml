@@ -42,18 +42,21 @@ stages:
         command: status
         cmdArgs: {verbose: true}
 
+  Tag:
+    actions:
+      - type: liquibase
+        command: tag
+
   Update:
     actions:
       - type: liquibase
-        # if: "${lbCommand} == update"
         command: update-testing-rollback
 
-  Rollback:
-    actions:
-      - type: liquibase
-        # if: "${lbCommand} == update"
-        command: rollback-one-update
-        cmdArgs: {force: true}
+  # Rollback:
+  #   actions:
+  #     - type: liquibase
+  #       command: rollback-one-update
+  #       cmdArgs: {force: true}
 
 ## The endStage ALWAYS RUNS. 
 ## So put actions here which you desire to perform whether previous stages' actions succeed or fail.

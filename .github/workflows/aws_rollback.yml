@@ -24,26 +24,25 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: DB Update
+name: DB Rollback
 
 on:
-  workflow_dispatch:
-    branches: [ "dev" ]
+  workflow_dispatch: 
+    branch: [ "dev" ]    
   push:
     branches:
-      - dev
-      - uat
-      - main
+  #     - dev
+  #     - uat
+  #     - main
 
 env:
   AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}
   AWS_REGION: ${{ secrets.AWS_REGION }}   # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: liquibase/sqlrepository # set this to your Amazon ECR repository name
   ECS_CLUSTER: ${{ vars.MY_ECS_CLUSTER }}  # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: ${{ vars.MY_ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: ${{ vars.MY_ECS_TASK_DEFINITION_ROLLBACK }} # set this to the path to your Amazon ECS task definition
   CONTAINER_NAME: ${{ vars.MY_CONTAINER_NAME }} # set this to the name of the container in the
   IMAGE_NAME: ${{ vars.IMAGE_NAME }}
-  TAG: ${{ github.run_number }}
 
 permissions:
   contents: read
@@ -53,7 +52,7 @@ jobs:
     name: Deploy to ${{ github.ref_name }}
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}
-    if: github.ref_name == 'dev' || github.ref_name == 'uat' || github.ref_name == 'main' 
+    # if: github.ref_name == 'dev' || github.ref_name == 'uat' || github.ref_name == 'main' 
 
     steps:
     - name: Checkout
@@ -76,7 +75,6 @@ jobs:
         ECR_REGISTRY: ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.us-west-2.amazonaws.com
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        echo "TAG=${{ env.TAG }}"
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .        
         docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -94,7 +92,6 @@ jobs:
           LIQUIBASE_COMMAND_URL=${{ vars.LIQUIBASE_COMMAND_URL }}
           LIQUIBASE_COMMAND_USERNAME=${{ vars.LIQUIBASE_COMMAND_USERNAME }}
           LIQUIBASE_COMMAND_PASSWORD=${{ vars.LIQUIBASE_COMMAND_PASSWORD }}
-          LIQUIBASE_COMMAND_TAG=${{ env.TAG }}
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
@@ -106,3 +103,11 @@ jobs:
         run-task-subnets: subnet-bf7d7ada,subnet-345e801f,subnet-0acebc53,subnet-13624764
         run-task-security-groups: sg-215c6345
         run-task-assign-public-IP: ENABLED
+
+# jobs:
+#   rollback:
+#     name: Deploy to ${{ github.ref_name }}
+#     runs-on: ubuntu-latest
+#     environment: ${{ github.ref_name }}
+#     if: github.ref_name == 'dev' || github.ref_name == 'uat' || github.ref_name == 'main' 
+
