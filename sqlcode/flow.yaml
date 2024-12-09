@@ -33,8 +33,7 @@ stages:
         cmdArgs: {
           auto-update: off,
           changeset-filter: pending,
-          checks-settings-file: "liquibase.checks-settings.conf",
-          report-name: "CHECKS.html"
+          checks-settings-file: "liquibase.checks-settings.conf"
         }
 
   Status:
@@ -51,8 +50,7 @@ stages:
   Update:
     actions:
       - type: liquibase
-        command: update
-        cmdArgs: {report-name: "UPDATE.html"}
+        command: update}
 
   # Rollback:
   #   actions:
