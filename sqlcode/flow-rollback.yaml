@@ -28,8 +28,7 @@ stages:
       - type: liquibase
         command: rollback-one-update
         cmdArgs: {
-          force: true,
-          report-name: "ROLLBACK.html"
+          force: true
         }
 
 ## The endStage ALWAYS RUNS. 
