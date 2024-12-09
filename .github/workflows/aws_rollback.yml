@@ -28,9 +28,9 @@ name: DB Rollback
 
 on:
   workflow_dispatch: 
-    branch: [ "dev" ]    
-  push:
-    branches:
+    # branch: [ "dev" ]    
+  # push:
+  #   branches:
   #     - dev
   #     - uat
   #     - main
@@ -43,6 +43,7 @@ env:
   ECS_TASK_DEFINITION: ${{ vars.MY_ECS_TASK_DEFINITION_ROLLBACK }} # set this to the path to your Amazon ECS task definition
   CONTAINER_NAME: ${{ vars.MY_CONTAINER_NAME }} # set this to the name of the container in the
   IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+  TAG: ${{ github.run_number }}
 
 permissions:
   contents: read
@@ -92,6 +93,8 @@ jobs:
           LIQUIBASE_COMMAND_URL=${{ vars.LIQUIBASE_COMMAND_URL }}
           LIQUIBASE_COMMAND_USERNAME=${{ vars.LIQUIBASE_COMMAND_USERNAME }}
           LIQUIBASE_COMMAND_PASSWORD=${{ vars.LIQUIBASE_COMMAND_PASSWORD }}
+          LIQUIBASE_COMMAND_TAG=${{ env.TAG }}
+          LIQUIBASE_REPORTS_PATH=s3://liquibase-workshop-bucket/reports/rollback-${{ env.TAG }}/
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
