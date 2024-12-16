@@ -52,6 +52,13 @@ stages:
       - type: liquibase
         command: update
 
+  Snapshot:
+    actions:
+      - type: liquibase
+        command: snapshot
+        globalArgs: { output-file: "s3://liquibase-workshop-bucket/${BRANCH}-snapshots/mySnapshot.json" }
+        cmdArgs: { snapshot-format: "JSON"}
+
   # Rollback:
   #   actions:
   #     - type: liquibase
