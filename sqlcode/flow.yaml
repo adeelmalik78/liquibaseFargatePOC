@@ -18,6 +18,24 @@ stages:
       - type: liquibase
         command: connect
 
+  Compare:
+    actions:
+      - type: liquibase
+        command: diff
+        cmdArgs: { 
+                    referenceUrl: "offline:sqlserver?snapshot=s3://liquibase-workshop-bucket/${BRANCH}-snapshots/mySnapshot.json"
+                    # drift-severity: 1,
+                    # drift-severity-missing: 2,
+                    # drift-severity-unexpected: 3,
+                    # drift-severity-changed: 4
+                  }
+        # globalArgs: { 
+        #             mirror-console-messages-to-log: "true",
+        #             reports-enabled: "true",
+        #             reports-path: "reports",
+        #             reports-name: "06.diff-report.html"
+        #           }       
+
   Checks:
     actions:
       - type: liquibase
