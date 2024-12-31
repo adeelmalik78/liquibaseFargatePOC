@@ -46,7 +46,7 @@
             "essential": true,
             "command": [
                 "--defaults-file=/sqlcode/liquibase.properties",
-                "--search-path=/sqlcode",
+                "--search-path=/sqlcode,s3://liquibase-workshop-bucket",
                 "--changelog-file=changelog.yaml",
                 "flow",
                 "--flow-file=/sqlcode/flow.yaml"

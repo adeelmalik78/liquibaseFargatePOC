@@ -23,7 +23,8 @@ stages:
       - type: liquibase
         command: diff
         cmdArgs: { 
-                    referenceUrl: "offline:postgresql?snapshot=s3://liquibase-workshop-bucket/${BRANCH}-snapshots/mySnapshot.json"
+                    reference-url: "offline:postgresql?snapshot=${BRANCH}-snapshots/mySnapshot.json",
+                    format: "json"
                     # drift-severity: 1,
                     # drift-severity-missing: 2,
                     # drift-severity-unexpected: 3,
