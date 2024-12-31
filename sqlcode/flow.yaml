@@ -33,8 +33,8 @@ stages:
         globalArgs: { 
                     mirror-console-messages-to-log: "true",
                     reports-enabled: "true",
-                    reports-path: "reports",
-                    reports-name: "s3://liquibase-workshop-bucket/reports/drift-report-${BRANCH}.html"
+                    reports-path: "s3://liquibase-workshop-bucket/reports",
+                    reports-name: "drift-report-${BRANCH}.html"
                   }       
 
   Checks:
