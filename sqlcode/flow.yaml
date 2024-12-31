@@ -18,24 +18,24 @@ stages:
       - type: liquibase
         command: connect
 
-  # Compare:
-  #   actions:
-  #     - type: liquibase
-  #       command: diff
-  #       cmdArgs: { 
-  #                   reference-url: "offline:postgresql?snapshot=${BRANCH}-snapshots/mySnapshot.json",
-  #                   format: "json",
-  #                   drift-severity: 1,
-  #                   drift-severity-missing: 2,
-  #                   drift-severity-unexpected: 3,
-  #                   drift-severity-changed: 4
-  #                 }
-  #       globalArgs: { 
-  #                   mirror-console-messages-to-log: "true",
-  #                   reports-enabled: "true",
-  #                   reports-path: "reports",
-  #                   reports-name: "s3://liquibase-workshop-bucket/reports/drift-report-${BRANCH}.html"
-  #                 }       
+  Compare:
+    actions:
+      - type: liquibase
+        command: diff
+        cmdArgs: { 
+                    reference-url: "offline:postgresql?snapshot=${BRANCH}-snapshots/mySnapshot.json",
+                    format: "json",
+                    drift-severity: 1,
+                    drift-severity-missing: 2,
+                    drift-severity-unexpected: 3,
+                    drift-severity-changed: 4
+                  }
+        globalArgs: { 
+                    mirror-console-messages-to-log: "true",
+                    reports-enabled: "true",
+                    reports-path: "reports",
+                    reports-name: "s3://liquibase-workshop-bucket/reports/drift-report-${BRANCH}.html"
+                  }       
 
   Checks:
     actions:
