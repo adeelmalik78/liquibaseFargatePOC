@@ -98,6 +98,8 @@ jobs:
           LIQUIBASE_REPORTS_PATH=s3://liquibase-workshop-bucket/reports/update-${{ env.TAG }}/
           LIQUIBASE_COMMAND_CHECKS_RUN_REPORT_NAME=CHECKS-${{ env.TAG }}.html
           LIQUIBASE_COMMAND_UPDATE_REPORT_NAME=UPDATE-${{ env.TAG }}.html
+          LIQUIBASE_LOG_FORMAT=JSON_PRETTY
+          LIQUIBASE_LOG_LEVEL=INFO
           BRANCH=${{ github.ref_name }}
 
     - name: Deploy Amazon ECS task definition
